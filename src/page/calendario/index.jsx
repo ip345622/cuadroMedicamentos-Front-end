@@ -1,7 +1,7 @@
 function CalendarioMedicamentos() {
     return ( 
         <div>
-            <h1 className="text-center font-bold text-xl"></h1>
+            <h1 className="text-center font-bold text-xl">Medicamentos</h1>
         </div>
      );
 }

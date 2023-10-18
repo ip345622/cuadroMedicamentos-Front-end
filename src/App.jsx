@@ -1,11 +1,10 @@
 import { useState } from 'react'
-
+import CalendarioMedicamentos from './page/calendario'
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      
+      <CalendarioMedicamentos />
     </>
   )
 }
