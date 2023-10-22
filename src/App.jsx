@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import CalendarioMedicamentos from './page/calendario'
 function App() {
 

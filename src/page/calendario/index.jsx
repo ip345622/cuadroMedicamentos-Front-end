@@ -1,9 +1,11 @@
+import { BsSun } from "react-icons/bs";
+
 function CalendarioMedicamentos() {
-    return ( 
-        <div>
-            <h1 className="text-center font-bold text-xl">Medicamentos</h1>
-        </div>
-     );
+  return (
+    <>
+        <h1 className="">Registro de Medicamentos</h1>
+    </>
+  );
 }
 
 export default CalendarioMedicamentos;
