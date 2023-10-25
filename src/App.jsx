@@ -2,11 +2,13 @@ import { BrowserRouter, useRoutes } from "react-router-dom";
 
 import CalendarioMedicamentos from "./page/calendario";
 import Formulario from "./page/formulario";
+import Login from "./component/login/Login.jsx"
 
 const AppRoutes = () => {
   let routes = useRoutes([
     { path: "/", element: <CalendarioMedicamentos /> },
     { path: "/form", element: <Formulario /> },
+    { path: "/login", element: <Login/>}
   ]);
   return routes;
 };
