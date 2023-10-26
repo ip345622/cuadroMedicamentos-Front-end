@@ -4,9 +4,9 @@ import bg from "../../img/bgLogin.jpg";
 function Login() {
   return (
     <div className="h-screen flex justify-center items-center bg-[#3498DB]">
-      <div className="flex justify-center font-nunito relative">
+      <div className="flex justify-center items-center font-nunito relative">
         <img src={bg} className="w-3/5 rounded-2xl shadow-xl"></img>
-        <div className="flex flex-col w-[25rem] py-20 gap-5 rounded-xl shadow-2xl absolute left-[23rem] top-12 bg-white">
+        <div className="flex flex-col w-[25rem] py-20 gap-5 rounded-xl shadow-2xl absolute bg-white">
           <h1 className=" text-4xl text-center font-bold text-blue-700">Login</h1>
           <form className="grid items-center justify-center gap-6">
             <div class="relative z-0 w-full mb-6 group">
@@ -45,7 +45,7 @@ function Login() {
             <button class="mt-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
               Button
             </button>
-            <a href="#" className="text-sm">Don't have an account? <span className="text-cyan-500">Register here</span></a>
+            <a href="/register" className="text-sm">Don't have an account? <span className="text-cyan-500">Register here</span></a>
           </form>
         </div>
       </div>

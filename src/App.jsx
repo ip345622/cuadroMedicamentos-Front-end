@@ -4,13 +4,15 @@ import CalendarioMedicamentos from "./page/calendario";
 import Formulario from "./page/formulario";
 import Login from "./component/login/Login.jsx"
 import Registration from "./component/registro/Registration.jsx"
+import Inicio from './page/inicio/Inicio.jsx'
 
 const AppRoutes = () => {
   let routes = useRoutes([
-    { path: "/", element: <CalendarioMedicamentos /> },
+    { path: "/datatable", element: <CalendarioMedicamentos /> },
     { path: "/form", element: <Formulario /> },
     { path: "/login", element: <Login/>},
-    { path: "/register", element: <Registration/>}
+    { path: "/register", element: <Registration/>},
+    { path: "/", element: <Inicio/>}
   ]);
   return routes;
 };
