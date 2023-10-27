@@ -3,7 +3,7 @@ import React from 'react'
 function Noon() {
   return (
     <div className="font-nunito">
-      <table className="table-auto border-collapse ">
+      <table className="table-auto border-separate border-spacing-1 border-2 p-5 rounded-2xl shadow-2xl">
         <thead>
           <tr className="text-xl">
             <th className="px-10">Medication</th>
