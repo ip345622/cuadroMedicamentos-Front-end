@@ -7,7 +7,9 @@ function Registration() {
       <div className="flex justify-center items-center font-nunito relative">
         <img src={bg} className="w-3/5 rounded-2xl shadow-xl"></img>
         <div className="flex flex-col w-[25rem] py-20 gap-5 rounded-xl shadow-2xl absolute backdrop-blur-lg backdrop-brightness-[.93] bg-white border-2">
-          <h1 className=" text-4xl text-center font-bold text-orange-500">Registration</h1>
+          <h1 className=" text-4xl text-center font-bold text-orange-500">
+            Registration
+          </h1>
           <form className="grid items-center justify-center gap-6">
             <div class="relative z-0 w-full mb-6 group">
               <input
@@ -44,7 +46,10 @@ function Registration() {
             <button class="mt-5 bg-transparent hover:bg-orange-500 text-orange-500 hover:text-white font-semibold py-2 px-4 border border-orange-500 hover:border-transparent rounded">
               Button
             </button>
-            <a href="/login" className="text-sm">Already have an account? <span className="text-orange-500 font-bold">Sign in</span></a>
+            <a href="/login" className="text-sm">
+              Already have an account?{" "}
+              <span className="text-orange-500 font-bold">Sign in</span>
+            </a>
           </form>
         </div>
       </div>

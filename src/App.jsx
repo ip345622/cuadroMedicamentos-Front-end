@@ -8,11 +8,12 @@ import Inicio from './page/inicio/Inicio.jsx'
 
 const AppRoutes = () => {
   let routes = useRoutes([
+    { path: "/", element: <Inicio/>},
     { path: "/datatable", element: <CalendarioMedicamentos /> },
     { path: "/form", element: <Formulario /> },
     { path: "/login", element: <Login/>},
     { path: "/register", element: <Registration/>},
-    { path: "/", element: <Inicio/>}
+    { path: "/inicio", element: <Inicio/>},
   ]);
   return routes;
 };
