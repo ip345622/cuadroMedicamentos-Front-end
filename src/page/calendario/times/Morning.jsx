@@ -2,12 +2,12 @@ import { BsSun } from "react-icons/bs";
 
 function Morning() {
   return (
-    <div className="font-nunito flex">
-      <div className="flex flex-col justify-center items-center gap-5 bg-yellow-300 px-7 text-xl font-semibold text-yellow-700 shadow-2xl rounded-s-2xl">
+    <div className="font-nunito flex gap-2">
+      <div className="flex flex-col justify-center items-center gap-2 bg-orange-300 px-7 text-xl font-semibold text-orange-700">
         <p>Morning</p>
-        <BsSun className="text-[4rem] text-yellow-600" />
+        <BsSun className="text-[2.5rem] text-orange-700" />
       </div>
-      <table className="table-auto border-separate border-spacing-1 border-2 p-2 shadow-2xl rounded-e-2xl">
+      <table className="table-auto border-separate">
         <thead>
           <tr className="text-xl">
             <th className="px-10">Medication</th>
@@ -17,8 +17,8 @@ function Morning() {
             <th className="px-10">Comments</th>
           </tr>
         </thead>
-        <tbody className="border-2 text-lg">
-          <tr className="border-2 bg-[#FDFD96]">
+        <tbody className="border-2">
+          <tr className="border-2 bg-[#FAC3A5]">
             <div className="flex justify-center gap-2">
               <input type="checkbox" name="" id="" />
               <div>
@@ -30,7 +30,7 @@ function Morning() {
             <td className="px-10">20-10-2023</td>
             <td className="px-10">Solo una pastilla por toma</td>
           </tr>
-          <tr className="bg-[#FDEF3B]">
+          <tr className="bg-[#e48d75]">
             <div className="flex justify-center gap-2">
               <input type="checkbox" name="" id="" />
               <div>
@@ -42,7 +42,7 @@ function Morning() {
             <td className="px-10">20-10-2023</td>
             <td className="px-10">Solo una pastilla por toma</td>
           </tr>
-          <tr className="bg-[#FDFD96]">
+          <tr className="bg-[#FAC3A5]">
             <div className="flex justify-center gap-2">
               <input type="checkbox" name="" id="" />
               <div>

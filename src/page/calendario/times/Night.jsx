@@ -1,30 +1,47 @@
-import React from "react";
+import { BsMoonStars } from "react-icons/bs";
 
 function Night() {
   return (
-    <div className="font-nunito">
-      <table className="table-auto border-separate border-spacing-1 border-2 p-5 rounded-2xl shadow-2xl ">
-        <thead>
-          <tr className="text-xl">
-            <th className="px-10">Medication</th>
-            <th className="px-10">Dosage</th>
-            <th className="px-10">Time</th>
-            <th className="px-10">Date</th>
-            <th className="px-10">Comments</th>
-          </tr>
-        </thead>
-        <tbody className="border-2 text-lg">
+    <div className="font-nunito flex gap-2">
+      <div className="flex flex-col gap-4 place-items-center bg-blue-400 p-5 px-10 text-xl font-semibold text-blue-950">
+        <p>Night</p>
+        <BsMoonStars className="text-[2.5rem] text-blue-950" />
+      </div>
+      <table className="table-auto border-separate">
+        <tbody className="border-2">
           <tr className="border-2 bg-blue-200">
-            <td className="px-10">Pepto</td>
-            <td className="px-10">500gm</td>
-            <td className="px-10">8hr</td>
+            <div className="flex justify-center gap-2 px-[3.6rem]">
+              <input type="checkbox" name="" id="" />
+              <div>
+                <td className="">Pepto</td>
+              </div>
+            </div>
+            <td className="px-12">500gm</td>
+            <td className="px-12">8hr</td>
             <td className="px-10">20-10-2023</td>
             <td className="px-10">Solo una pastilla por toma</td>
           </tr>
           <tr className="bg-blue-400">
-            <td className="px-10">Aspirina</td>
-            <td className="px-10">500gm</td>
-            <td className="px-10">8hr</td>
+            <div className="flex justify-center gap-2">
+              <input type="checkbox" name="" id="" />
+              <div>
+                <td className="">Aspirina</td>
+              </div>
+            </div>
+            <td className="px-12">500gm</td>
+            <td className="px-12">8hr</td>
+            <td className="px-10">20-10-2023</td>
+            <td className="px-10">Solo una pastilla por toma</td>
+          </tr>
+          <tr className="border-2 bg-blue-200">
+            <div className="flex justify-center gap-2 px-[3.4rem]">
+              <input type="checkbox" name="" id="" />
+              <div>
+                <td className="">Pepto</td>
+              </div>
+            </div>
+            <td className="px-12">500gm</td>
+            <td className="px-12">8hr</td>
             <td className="px-10">20-10-2023</td>
             <td className="px-10">Solo una pastilla por toma</td>
           </tr>
