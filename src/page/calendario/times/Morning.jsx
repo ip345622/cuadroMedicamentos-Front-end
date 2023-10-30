@@ -1,4 +1,6 @@
 import { BsSun } from "react-icons/bs";
+import { BiEditAlt } from "react-icons/bi";
+import { RiDeleteBin6Fill } from "react-icons/ri";
 
 function Morning() {
   return (
@@ -29,6 +31,14 @@ function Morning() {
             <td className="px-10">8hr</td>
             <td className="px-10">20-10-2023</td>
             <td className="px-10">Solo una pastilla por toma</td>
+            <div className="flex gap-5">
+              <button className='hover:bg-green-700 rounded-md'>
+                <BiEditAlt className="text-green-700 hover:text-white text-3xl" />
+              </button>
+              <button className="hover:bg-red-500 rounded-md">
+                <RiDeleteBin6Fill className= "text-red-500 hover:text-white text-3xl" />
+              </button>
+            </div>
           </tr>
           <tr className="bg-[#e48d75]">
             <div className="flex justify-center gap-2">
@@ -54,7 +64,6 @@ function Morning() {
             <td className="px-10">20-10-2023</td>
             <td className="px-10">Solo una pastilla por toma</td>
           </tr>
-
         </tbody>
       </table>
     </div>

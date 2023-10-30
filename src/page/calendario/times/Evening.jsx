@@ -1,4 +1,6 @@
 import { PiSunHorizonLight } from "react-icons/pi";
+import { BiEditAlt } from "react-icons/bi";
+import { RiDeleteBin6Fill } from "react-icons/ri";
 
 function Evening() {
   return (
@@ -20,6 +22,14 @@ function Evening() {
             <td className="px-12">8hr</td>
             <td className="px-10">20-10-2023</td>
             <td className="px-10">Solo una pastilla por toma</td>
+            <div className="flex gap-5">
+              <button className="hover:bg-green-700 rounded-md">
+                <BiEditAlt className="text-green-700 hover:text-white text-3xl" />
+              </button>
+              <button className="hover:bg-red-500 rounded-md">
+                <RiDeleteBin6Fill className="text-red-500 hover:text-white text-3xl" />
+              </button>
+            </div>
           </tr>
           <tr className="bg-cyan-300">
             <div className="flex justify-center gap-2">
