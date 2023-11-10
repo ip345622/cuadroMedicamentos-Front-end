@@ -1,19 +1,45 @@
 import React from "react";
 import bg from "../../img/bgLogin.jpg";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+// formulario
+import { useForm } from "react-hook-form";
+import { useAuth } from "../../context/AuthContext";
 
 function Login() {
+  const {register, handleSubmit} = useForm();
+  const {signin, error: signinErrors,isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+ 
+  const onSubmit = handleSubmit((data) => {
+    signin(data);
+  });
+  useEffect(() => {
+    if(isAuthenticated) {
+      navigate('/datatable');
+    }
+  },[isAuthenticated]);
   return (
     <div className="h-screen flex justify-center items-center bg-[#3498DB]">
       <div className="flex justify-center items-center font-nunito relative">
         <img src={bg} className="w-3/5 rounded-2xl shadow-xl"></img>
         <div className="flex flex-col w-[25rem] py-20 gap-5 rounded-xl shadow-2xl absolute bg-white">
+        {
+        signinErrors.map((error,i) => (
+          <div className="bg-red-500  text-center w-[25rem] font-semibold text-white" key={i}>
+            {error}
+          </div>
+        ))
+      }
           <h1 className=" text-4xl text-center font-bold text-blue-700">Login</h1>
-          <form className="grid items-center justify-center gap-6">
+          <form className="grid items-center justify-center gap-6" onSubmit={onSubmit}>
             <div class="relative z-0 w-full mb-6 group">
               <input
                 type="email"
                 name="floating_email"
                 id="floating_email"
+                {...register("email", {required: true})}
                 class="text- lg block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-[#6C8DFA] dark:focus:border-blue-700 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
                 required
@@ -30,6 +56,7 @@ function Login() {
                 type="password"
                 name="floating_password"
                 id="floating_password"
+                {...register("password", {required: true})}
                 class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-[#6C8DFA] dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
                 required
@@ -42,7 +69,9 @@ function Login() {
               </label>
             </div>
             <a href="#" className=" text-cyan-500 text-sm text-right">Forgotten your password?</a>
-            <button class="mt-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+            <button class="mt-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            type="submit"
+            >
               Button
             </button>
             <a href="/register" className="text-sm">Don't have an account? <span className="text-cyan-500">Register here</span></a>
