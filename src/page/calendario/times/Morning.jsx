@@ -1,4 +1,5 @@
 import { BsSun } from "react-icons/bs";
+import {HiBarsArrowDown, HiBarsArrowUp} from 'react-icons/hi2'
 import Delete from "../../../assets/Delete.svg";
 import Edit from "../../../assets/Edit.svg";
 import Swal from "sweetalert2";
@@ -10,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import { useMedicamento } from "../../../context/medicamentosContext";
 
 function Morning() {
+  const [showAllRows, setShowAllRows] = useState(false);
   const { mostrarMedicamentos, medicamentos, deleteM, updateM } =
     useMedicamento();
   const [isCheckboxDisabled, setIsCheckboxDisabled] = useState(false);
@@ -31,7 +33,9 @@ function Morning() {
 
     // Obtener la hora de frecuencia del medicamento
     const frecuencia = item.frecuencia;
-    const [frecuenciaHours, frecuenciaMinutes] = frecuencia.split(":").map(Number);
+    const [frecuenciaHours, frecuenciaMinutes] = frecuencia
+      .split(":")
+      .map(Number);
 
     // Calcular la nueva hora sumando la hora de frecuencia a la hora actual
     const newHour = (currentHour + frecuenciaHours) % 24;
@@ -79,44 +83,52 @@ function Morning() {
             </tr>
           </thead>
           <tbody className="border-2">
-            {morningMedicamentos.map((item) => (
-              <tr className="border-2 bg-[#f9dad8] text-center" key={item._id}>
-                <td className="">{item.nombreMedicamento}</td>
-                <td className="px-10">{item.dosis}</td>
-                <td className="px-10">{item.frecuencia} hours</td>
-                <td className="px-[61px]">{item.dias} </td>
-                <td className="px-10">{item.comentario}</td>
-                <td className="px-11">
-                  <input
-                    type="checkbox"
-                    onChange={() => handleCheckboxClick(item)}
-                  />
-                </td>
-                {/* <td className="px-10">
-                  {new Date(item.createdAt).getHours()}:
-                  {new Date(item.createdAt).getMinutes()}
-                </td> */}
+            {morningMedicamentos.map((item, index) => (
 
-                <th
-                  className="flex justify-center h-[100px]  items-center justify-items-center cursor-pointer"
-                  onClick={() => {
-                    deleteM(item._id);
-                  }}
-                >
-                  <img src={Delete} alt="delete" />
-                </th>
-                <th
-                  className="px-10 cursor-pointer"
-                  onClick={() => {
-                    handleEditClick(item._id);
-                  }}
-                >
-                  <img src={Edit} />
-                </th>
-              </tr>
+              <React.Fragment key={item._id}>
+                {(index < 2 || showAllRows) && (
+                  <tr
+                    className="border-2 bg-[#f9dad8] text-center"
+                    key={item._id}
+                  >
+                    <td className="">{item.nombreMedicamento}</td>
+                    <td className="px-10">{item.dosis}</td>
+                    <td className="px-10">{item.frecuencia} hours</td>
+                    <td className="px-[61px]">{item.dias} </td>
+                    <td className="px-10">{item.comentario}</td>
+                    <td className="px-11">
+                      <input
+                        type="checkbox"
+                        onChange={() => handleCheckboxClick(item)}
+                      />
+                    </td>
+                    <th
+                      className="flex justify-center h-[100px]  items-center justify-items-center cursor-pointer"
+                      onClick={() => {
+                        deleteM(item._id);
+                      }}
+                    >
+                      <img src={Delete} alt="delete" />
+                    </th>
+                    <th
+                      className="px-10 cursor-pointer"
+                      onClick={() => {
+                        handleEditClick(item._id);
+                      }}
+                    >
+                      <img src={Edit} />
+                    </th>
+                  </tr>
+                )}
+              </React.Fragment>
             ))}
           </tbody>
         </table>
+        {morningMedicamentos.length > 3 && (
+          <button onClick={() => setShowAllRows(!showAllRows)}>
+            {showAllRows ? <HiBarsArrowUp className="text-3xl"/> : <HiBarsArrowDown className="text-3xl"/>}
+          </button>
+        )}
       </div>
     </div>
   );

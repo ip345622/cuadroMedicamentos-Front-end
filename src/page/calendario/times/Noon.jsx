@@ -1,4 +1,5 @@
 import { PiCloudSun } from "react-icons/pi";
+import {HiBarsArrowDown, HiBarsArrowUp} from 'react-icons/hi2'
 import React,{useEffect, useState} from "react";
 import Swal from 'sweetalert2';
 import { useMedicamento } from "../../../context/medicamentosContext";
@@ -6,6 +7,7 @@ import Delete from '../../../assets/Delete.svg';
 import Edit from '../../../assets/Edit.svg';
 
 function Noon() {
+  const [showAllRows, setShowAllRows] = useState(false);
   const {mostrarMedicamentos,medicamentos, deleteM} = useMedicamento();  
   
   const handleCheckboxClick = async (item) => {
@@ -76,25 +78,36 @@ function Noon() {
       </div>
       <div className="font-nunito flex gap-2">
         <table className="table-auto border-separate">
+          {/* Listado de pastillas */}
         <tbody className="border-2">
-            {noonMedicamentos?.map((item) =>(
-              <tr className="border-2 bg-[#fae8d0] text-center" key={item._id}>
-              <td className="w-[11.45rem]">{item.nombreMedicamento}</td>
-              <td className="w-[9.4rem]">{item.dosis}</td>
-              <td className="w-[9.5rem]">{item.frecuencia} hours</td>
-              <td className="w-[10.6rem]">{item.dias}</td>
-              <td className="w-[13.3rem]">{item.comentario}</td>
-              <td className="px-16"><input type="checkbox" onChange={() => handleCheckboxClick(item)} /></td>
-              <th className="flex justify-center px-12 h-[100px] items-center justify-items-center cursor-pointer"
-              onClick={() => {deleteM(item._id)}}
-              ><img src={Delete} alt="delete" /></th>
-              <th className="px-10 cursor-pointer" onClick={() =>{handleEditClick(item._id)}}>
-                <img src={Edit}/>
-              </th>
-            </tr>
+            {noonMedicamentos?.map((item, index) =>(
+              <React.Fragment key={item._id}>
+                {(index < 2 || showAllRows) && (
+                  <tr className="border-2 bg-[#fae8d0] text-center" key={item._id}>
+                    <td className="w-[11.45rem]">{item.nombreMedicamento}</td>
+                    <td className="w-[9.4rem]">{item.dosis}</td>
+                    <td className="w-[9.5rem]">{item.frecuencia} hours</td>
+                    <td className="w-[10.6rem]">{item.dias}</td>
+                    <td className="w-[13.3rem]">{item.comentario}</td>
+                    <td className="px-16"><input type="checkbox" onChange={() => handleCheckboxClick(item)} /></td>
+                    <th className="flex justify-center px-12 h-[100px] items-center justify-items-center cursor-pointer"
+                      onClick={() => {deleteM(item._id)}}> 
+                      <img src={Delete} alt="delete" />
+                    </th>
+                    <th className="px-10 cursor-pointer" onClick={() =>{handleEditClick(item._id)}}>
+                      <img src={Edit}/>
+                    </th>
+                  </tr>
+                )}
+              </React.Fragment>
             ))}
           </tbody>
         </table>
+        {noonMedicamentos.length > 2 && (
+          <button onClick={() => setShowAllRows(!showAllRows)}>
+            {showAllRows ? <HiBarsArrowUp className="text-3xl"/> : <HiBarsArrowDown className="text-3xl"/>}
+          </button>
+        )}
       </div>
     </div>
   );
