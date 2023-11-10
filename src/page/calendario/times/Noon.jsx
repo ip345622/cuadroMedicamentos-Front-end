@@ -8,9 +8,20 @@ import Edit from '../../../assets/Edit.svg';
 
 function Noon() {
   const [showAllRows, setShowAllRows] = useState(false);
-  const {mostrarMedicamentos,medicamentos, deleteM} = useMedicamento();  
-  
+  const { mostrarMedicamentos, medicamentos, deleteM, updateM } =
+    useMedicamento();
+  const [isCheckboxDisabled, setIsCheckboxDisabled] = useState(false);
+  const [showEditMessage, setShowEditMessage] = useState(false);
+
+  useEffect(() => {
+    mostrarMedicamentos();
+  }, []);
+
   const handleCheckboxClick = async (item) => {
+    if (isCheckboxDisabled) {
+      alert("El checkbox se habilitara en 30 minutos");
+      return; // Evitar que se realice alguna acción si el checkbox está deshabilitado
+    }
     // Obtener la hora actual
     const currentDate = new Date();
     const currentHour = currentDate.getHours();
@@ -18,7 +29,9 @@ function Noon() {
 
     // Obtener la hora de frecuencia del medicamento
     const frecuencia = item.frecuencia;
-    const [frecuenciaHours, frecuenciaMinutes] = frecuencia.split(":").map(Number);
+    const [frecuenciaHours, frecuenciaMinutes] = frecuencia
+      .split(":")
+      .map(Number);
 
     // Calcular la nueva hora sumando la hora de frecuencia a la hora actual
     const newHour = (currentHour + frecuenciaHours) % 24;
@@ -39,18 +52,7 @@ function Noon() {
     }, 30 * 60 * 1000); // 30 minutos en milisegundos
   };
 
-  useEffect(() => {
-    mostrarMedicamentos();
-  }, []);
-
-  // Filtrar los medicamentos que deben tomarse en el rango de horas de la tarde (por ejemplo, de 12:00 PM a 6:00 PM)
-  const noonMedicamentos = medicamentos.filter((item) => {
-    const [horaToma] = item.dias.split(":").map(Number);
-    console.log(horaToma); 
-    return horaToma >= 12 && horaToma < 17; // Ajusta según el rango de horas que consideras como "noon"
-  });
-
-  function handleEditClick(item) {
+  const handleEditClick = (item) => {
     Swal.fire({
       title: "Do you want to edit this medication?",
       text: "You won't be able to revert this!",
@@ -58,18 +60,23 @@ function Noon() {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, edit it!"
+      confirmButtonText: "Yes, edit it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        // Redirige a la página de edición si el usuario confirma
-        window.location.href =`/form/${item}`;
+        // Utilizar enrutamiento de React para manejar la navegación
+        window.location.href = `/form/${item._id}`;
       }
     });
   };
 
-  useEffect(() => {
-    mostrarMedicamentos();
-  }, []);
+
+  // Filtrar los medicamentos que deben tomarse en el rango de horas de la tarde (por ejemplo, de 12:00 PM a 6:00 PM)
+  const noonMedicamentos = medicamentos.filter((item) => {
+    const [horaToma] = item.dias.split(":").map(Number);
+    console.log(horaToma); 
+    return item.necesario === "no" && horaToma >= 12 && horaToma < 17; // Ajusta según el rango de horas que consideras como "noon"
+  });
+
   return (
     <div className="flex">
       <div className="flex flex-col justify-center items-center bg-[#ffeac8] px-[2.1rem] py-5 w-[7.7rem] text-xl font-semibold">
@@ -89,7 +96,8 @@ function Noon() {
                     <td className="w-[9.5rem]">{item.frecuencia} hours</td>
                     <td className="w-[10.6rem]">{item.dias}</td>
                     <td className="w-[13.3rem]">{item.comentario}</td>
-                    <td className="px-16"><input type="checkbox" onChange={() => handleCheckboxClick(item)} /></td>
+                    <td className="px-16"><input type="checkbox" 
+                    onChange={() => handleCheckboxClick(item)} /></td>
                     <th className="flex justify-center px-12 h-[100px] items-center justify-items-center cursor-pointer"
                       onClick={() => {deleteM(item._id)}}> 
                       <img src={Delete} alt="delete" />

@@ -55,11 +55,27 @@ function Morning() {
       setIsCheckboxDisabled(false);
     }, 30 * 60 * 1000); // 30 minutos en milisegundos
   };
+  const handleEditClick = (item) => {
+    Swal.fire({
+      title: "Do you want to edit this medication?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, edit it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Utilizar enrutamiento de React para manejar la navegación
+        window.location.href = `/form/${item._id}`;
+      }
+    });
+  };
   // Filtrar los medicamentos que deben tomarse en el rango de horas de la mañana (por ejemplo, de 6:00 AM a 12:00 PM)
   const morningMedicamentos = medicamentos.filter((item) => {
     const [horaToma] = item.dias.split(":").map(Number);
     console.log(horaToma);
-    return horaToma >= 6 && horaToma < 12; // Ajusta según el rango de horas que consideras como "morning"
+    return item.necesario === "no" && horaToma >= 6 && horaToma < 12; // Ajusta según el rango de horas que consideras como "morning"
   });
 
   return (

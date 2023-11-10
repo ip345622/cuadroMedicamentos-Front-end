@@ -7,6 +7,11 @@ function Formulario() {
   const { register, handleSubmit, setValue } = useForm();
   const { createMedicamentos, getMedicamentoId, updateM } = useMedicamento();
   const { user } = useContext(AuthContext);
+   // Obtener la fecha y hora actual del navegador
+   const currentDate = new Date();
+
+   // Formatear la fecha y hora actual como "hh:mm"
+   const currentTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
   const userId = user ? user.id : null;
 
   const params = useParams();
@@ -27,49 +32,18 @@ function Formulario() {
   }, []);
 
   const onSubmit = handleSubmit(async (data) => {
-    // Obtener la fecha actual
-    const currentDate = new Date();
-    const currentHour = currentDate.getHours();
-    const currentMinutes = currentDate.getMinutes();
-    const currentTime = `${currentHour}:${currentMinutes}`;
+   
 
-    // Obtener la hora de creación
-    const createdHour = new Date(data.createdAt).getHours();
-    const createdMinutes = new Date(data.createdAt).getMinutes();
+  // Asignar el valor actual al campo 'dias'
+  console.log(currentTime);
+  // setValue("dias", currentTime);
 
-    // Crear un objeto Date con la hora de creación
-    const createdDate = new Date();
-    createdDate.setHours(createdHour);
-    createdDate.setMinutes(createdMinutes);
-
-    // Obtener la fecha de la toma (día siguiente)
-    const pastillatakenDate = new Date(data.dias);
-    pastillatakenDate.setDate(pastillatakenDate.getDate() + 1);
-
-    // Obtener los minutos totales de currentTime y createdDate
-    const currentTimeMinutes = currentHour * 60 + currentMinutes;
-    const createdTimeMinutes = createdHour * 60 + createdMinutes;
-
-    // Calcular la diferencia de tiempo en minutos
-    const timeDifferenceMinutes = currentTimeMinutes - createdTimeMinutes;
-
-    // Calcular la próxima toma sumando la diferencia a la fecha de toma
-    const nextTakeDate = new Date(
-      pastillatakenDate.getTime() + timeDifferenceMinutes * 60000
-    );
-
-    // Formatear la fecha de la próxima toma
-    const nextTakeTime = `${nextTakeDate.getHours()}:${nextTakeDate.getMinutes()}`;
-
-    // Asignar el resultado al campo 'siguienteToma'
-    setValue("dias", nextTakeTime);
-
-    // Continuar con el envío del formulario
-    if (params.id) {
-      await updateM(params.id, data);
-    } else {
-      await createMedicamentos(data);
-    }
+  // Continuar con el envío del formulario
+  if (params.id) {
+    await updateM(params.id, data);
+  } else {
+    await createMedicamentos(data);
+  }
   });
 
   return (
@@ -92,6 +66,8 @@ function Formulario() {
               required
               {...register("nombreMedicamento")}
               autoFocus
+              // options={medicamentos}
+              // isSearchable
               className="appearance-none border-b-2 border-[#D5E3F0] w-full py-2 px-3 text-gray-700 leading-tight focus:border-[#6E78FF] focus:outline-none"
               type="text"
               placeholder="Enter the medication name"
@@ -127,9 +103,20 @@ function Formulario() {
             </label>
             <input
               required
-              {...register("dias")}
+              // hidden
+              // {...register("")}
+              // value={currentTime}
               className="appearance-none border-b-2 border-[#D5E3F0] w-full py-2 px-3 text-gray-700 leading-tight focus:border-[#6E78FF] focus:outline-none"
-              type="number"
+              type="text"
+              placeholder="How many days should it be consumed?"
+            />
+            <input
+              required
+              hidden
+              {...register("dias")}
+              value={currentTime}
+              className="appearance-none border-b-2 border-[#D5E3F0] w-full py-2 px-3 text-gray-700 leading-tight focus:border-[#6E78FF] focus:outline-none"
+              type="text"
               placeholder="How many days should it be consumed?"
             />
           </div>

@@ -9,12 +9,48 @@ import Edit from "../../../assets/Edit.svg";
 
 function Evening() {
   const [showAllRows, setShowAllRows] = useState(false);
-  const { mostrarMedicamentos, medicamentos, deleteM } = useMedicamento();
-  // const [eveningMedicamentos, setEveningMedicamentos] = useState([]);
+  const { mostrarMedicamentos, medicamentos, deleteM, updateM } =
+    useMedicamento();
+  const [isCheckboxDisabled, setIsCheckboxDisabled] = useState(false);
+  const [showEditMessage, setShowEditMessage] = useState(false);
 
   useEffect(() => {
     mostrarMedicamentos();
   }, []);
+
+  const handleCheckboxClick = async (item) => {
+    if (isCheckboxDisabled) {
+      alert("El checkbox se habilitara en 30 minutos");
+      return; // Evitar que se realice alguna acción si el checkbox está deshabilitado
+    }
+     // Obtener la hora actual
+  const currentDate = new Date();
+  const currentHour = currentDate.getHours();
+  const currentMinutes = currentDate.getMinutes();
+
+  // Obtener la hora de frecuencia del medicamento y convertirla a números
+  const [frecuenciaHours, frecuenciaMinutes] = item.frecuencia.split(":").map(Number);
+
+  // Calcular la nueva hora sumando la hora de frecuencia a la hora actual
+  const newHour = (currentHour + frecuenciaHours) % 24;
+  const newMinutes = (currentMinutes + frecuenciaMinutes) % 60;
+
+  // Actualizar la hora en el campo 'dias' del medicamento
+  const newTime = `${newHour}:${newMinutes}`;
+  console.log(newTime);
+  await updateM(item._id, { dias: newTime });
+
+  // Deshabilitar el checkbox y mostrar el mensaje
+  setIsCheckboxDisabled(true);
+  setShowEditMessage(true);
+  mostrarMedicamentos();
+
+  // Habilita nuevamente el checkbox después de 30 minutos
+  setTimeout(() => {
+    setShowEditMessage(false);
+    setIsCheckboxDisabled(false);
+  }, 30 * 60 * 1000); // 30 minutos en milisegundos
+};
 
   function handleEditClick(item) {
     Swal.fire({
@@ -32,42 +68,7 @@ function Evening() {
       }
     });
   }
-  const handleCheckboxClick = async (item) => {
-    if (isCheckboxDisabled) {
-      alert("El checkbox se habilitará en 30 minutos");
-      return;
-    }
-
-    // Obtener la hora actual
-    const currentDate = new Date();
-    const currentHour = currentDate.getHours();
-    const currentMinutes = currentDate.getMinutes();
-
-    // Obtener la hora de frecuencia del medicamento
-    const frecuencia = item.frecuencia;
-    const [frecuenciaHours, frecuenciaMinutes] = frecuencia
-      .split(":")
-      .map(Number);
-
-    // Calcular la nueva hora sumando la hora de frecuencia a la hora actual
-    const newHour = (currentHour + frecuenciaHours) % 24;
-    const newMinutes = (currentMinutes + frecuenciaMinutes) % 60;
-
-    // Actualizar la hora en el campo 'dias' del medicamento
-    const newTime = `${newHour}:${newMinutes}`;
-    await updateM(item._id, { dias: newTime });
-
-    // Deshabilitar el checkbox y mostrar el mensaje
-    setIsCheckboxDisabled(true);
-    setShowEditMessage(true);
-    mostrarMedicamentos();
-
-    // Habilita nuevamente el checkbox después de 30 minutos
-    setTimeout(() => {
-      setShowEditMessage(false);
-      setIsCheckboxDisabled(false);
-    }, 30 * 60 * 1000); // 30 minutos en milisegundos
-  };
+  
 
   // Filtrar los medicamentos que deben tomarse en el rango de horas de la tarde (por ejemplo, de 18:00 PM a 23:59 PM)
   const eveningMedicamentos = medicamentos.filter((item) => {
@@ -100,7 +101,7 @@ function Evening() {
                     <td className="px-16">
                       <input
                         type="checkbox"
-                        onChange={() => handleCheckboxClick(item)}
+                        onChange={() => {handleCheckboxClick(item)}}
                       />
                     </td>
                     <th

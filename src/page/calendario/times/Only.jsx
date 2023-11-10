@@ -29,7 +29,7 @@ function Only() {
   // Filtrar los medicamentos basados en el campo 'nombreNecesario'
   const filteredMedicamentos = medicamentos.filter((item) => {
     // Ajusta la comparación según tus necesidades
-    return item.necesario === "si";
+    return item.necesario == "si";
   });
 
   useEffect(() => {
@@ -46,7 +46,7 @@ function Only() {
       <div className="font-nunito flex gap-2">
         <table className="table-auto border-separate">
           <tbody className="border-2">
-            {filteredMedicamentos?.map((item) => (
+            {filteredMedicamentos?.map((item, index) => (
               <React.Fragment key={item._id}>
                 {(index < 2 || showAllRows) && (
                   <tr
@@ -58,8 +58,8 @@ function Only() {
                     <td className="w-[9.5rem]">--</td>
                     <td className="w-[10.6rem]">--</td>
                     <td className="w-[13.3rem]">{item.comentario}</td>
-                    <td className="px-16">
-                      <input type="checkbox" />
+                    <td className="px-16"> --
+                      {/* <input type="checkbox" /> */}
                     </td>
                     <th
                       className="flex justify-center px-12 h-[100px] items-center justify-items-center cursor-pointer"

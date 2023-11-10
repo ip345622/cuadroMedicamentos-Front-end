@@ -2,15 +2,20 @@ import { useState } from "react";
 import Form from "../../component/formulario/index.jsx";
 import { IoClose } from "react-icons/io5";
 import {FaPlus} from 'react-icons/fa6'
+import { Link } from "react-router-dom";
 
 import Morning from "./times/Morning.jsx";
 import Noon from "./times/Noon.jsx";
 import Evening from "./times/Evening.jsx";
 import Night from "./times/Night.jsx";
 import Only from "./times/Only.jsx";
+import { useAuth } from "../../context/AuthContext";
 
 function CalendarioMedicamentos() {
   const [form, setForm] = useState("");
+  const {logout } = useAuth();
+
+
 
   const viewForm = (form) => {
     setForm("");
@@ -25,6 +30,7 @@ function CalendarioMedicamentos() {
       <div className="flex gap-5 mb-10">
         <h1 className="text-5xl h-0 font-bold">Medication Calendar</h1>
       </div>
+      <Link to={'/'} onClick={() =>{logout()}} className="rounded-md text-2xl font-bold p-2 bg-[#30afb1]">Logout</Link>
       <div className="flex flex-col gap-2">
         <Morning />
         <Noon />

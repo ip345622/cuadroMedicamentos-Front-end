@@ -8,10 +8,15 @@ import Edit from "../../../assets/Edit.svg";
 
 function Night() {
   const [showAllRows, setShowAllRows] = useState(false);
-  const { mostrarMedicamentos, medicamentos, deleteM } = useMedicamento();
+  const { mostrarMedicamentos, medicamentos, deleteM, updateM } =
+    useMedicamento();
   const [isCheckboxDisabled, setIsCheckboxDisabled] = useState(false);
+  const [showEditMessage, setShowEditMessage] = useState(false);
 
-  function handleEditClick(item) {
+  useEffect(() => {
+    mostrarMedicamentos();
+  }, []);
+  const handleEditClick = (item) => {
     Swal.fire({
       title: "Do you want to edit this medication?",
       text: "You won't be able to revert this!",
@@ -22,52 +27,52 @@ function Night() {
       confirmButtonText: "Yes, edit it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        // Redirige a la página de edición si el usuario confirma
-        window.location.href = `/form/${item}`;
+        // Utilizar enrutamiento de React para manejar la navegación
+        window.location.href = `/form/${item._id}`;
       }
     });
-  }
+  };
+
   const handleCheckboxClick = async (item) => {
     if (isCheckboxDisabled) {
-      alert("El checkbox se habilitará en 30 minutos");
-      return;
+      alert("El checkbox se habilitara en 30 minutos");
+      return; // Evitar que se realice alguna acción si el checkbox está deshabilitado
     }
-
+    // Obtener la hora actual
     const currentDate = new Date();
     const currentHour = currentDate.getHours();
     const currentMinutes = currentDate.getMinutes();
 
+    // Obtener la hora de frecuencia del medicamento
     const frecuencia = item.frecuencia;
     const [frecuenciaHours, frecuenciaMinutes] = frecuencia
       .split(":")
       .map(Number);
 
+    // Calcular la nueva hora sumando la hora de frecuencia a la hora actual
     const newHour = (currentHour + frecuenciaHours) % 24;
     const newMinutes = (currentMinutes + frecuenciaMinutes) % 60;
 
+    // Actualizar la hora en el campo 'dias' del medicamento
     const newTime = `${newHour}:${newMinutes}`;
-    console.log(newTime);
     await updateM(item._id, { dias: newTime });
 
+    // Deshabilitar el checkbox y mostrar el mensaje
     setIsCheckboxDisabled(true);
     setShowEditMessage(true);
     mostrarMedicamentos();
-
+    // Habilita nuevamente el checkbox después de 30 minutos
     setTimeout(() => {
       setShowEditMessage(false);
       setIsCheckboxDisabled(false);
-    }, 30 * 60 * 1000);
+    }, 30 * 60 * 1000); // 30 minutos en milisegundos
   };
-
   const nightMedicamentos = medicamentos.filter((item) => {
     const [horaToma] = item.dias.split(":").map(Number);
     console.log(horaToma);
     return item.necesario === "no" && horaToma >= 0 && horaToma <= 5;
   });
 
-  useEffect(() => {
-    mostrarMedicamentos();
-  }, []);
   return (
     <div className="flex">
       <div className="flex flex-col gap-4 place-items-center bg-[#6b8dba] p-5 px-[2.3rem] text-xl font-semibold">
