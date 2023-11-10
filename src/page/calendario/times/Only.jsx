@@ -24,6 +24,11 @@ function Only() {
       }
     });
   };
+  // Filtrar los medicamentos basados en el campo 'nombreNecesario'
+  const filteredMedicamentos = medicamentos.filter((item) => {
+    // Ajusta la comparación según tus necesidades
+    return item.necesario === 'si';
+  });
 
   useEffect(() => {
     mostrarMedicamentos();
@@ -39,12 +44,12 @@ function Only() {
       <div className="font-nunito flex gap-2">
         <table className="table-auto border-separate">
         <tbody className="border-2">
-            {medicamentos?.map((item) =>(
+            {filteredMedicamentos?.map((item) =>(
               <tr className="border-2 bg-[#c6ead9] text-center" key={item._id}>
               <td className="w-[11.45rem]">{item.nombreMedicamento}</td>
               <td className="w-[9.4rem]">{item.dosis}</td>
-              <td className="w-[9.5rem]">{item.frecuencia} hours</td>
-              <td className="w-[10.6rem]">{item.dias}</td>
+              <td className="w-[9.5rem]">--</td>
+              <td className="w-[10.6rem]">--</td>
               <td className="w-[13.3rem]">{item.comentario}</td>
               <td className="px-16"><input type="checkbox" /></td>
               <th className="flex justify-center px-12 h-[100px] items-center justify-items-center cursor-pointer"

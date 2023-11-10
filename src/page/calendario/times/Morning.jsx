@@ -24,7 +24,26 @@ function Morning() {
       alert("El checkbox se habilitara en 30 minutos");
       return; // Evitar que se realice alguna acción si el checkbox está deshabilitado
     }
-   
+    // Obtener la hora actual
+    const currentDate = new Date();
+    const currentHour = currentDate.getHours();
+    const currentMinutes = currentDate.getMinutes();
+
+    // Obtener la hora de frecuencia del medicamento
+    const frecuencia = item.frecuencia;
+    const [frecuenciaHours, frecuenciaMinutes] = frecuencia.split(":").map(Number);
+
+    // Calcular la nueva hora sumando la hora de frecuencia a la hora actual
+    const newHour = (currentHour + frecuenciaHours) % 24;
+    const newMinutes = (currentMinutes + frecuenciaMinutes) % 60;
+
+    // Actualizar la hora en el campo 'dias' del medicamento
+    const newTime = `${newHour}:${newMinutes}`;
+    await updateM(item._id, { dias: newTime });
+
+    // Deshabilitar el checkbox y mostrar el mensaje
+    setIsCheckboxDisabled(true);
+    setShowEditMessage(true);
     mostrarMedicamentos();
     // Habilita nuevamente el checkbox después de 30 minutos
     setTimeout(() => {
@@ -32,6 +51,12 @@ function Morning() {
       setIsCheckboxDisabled(false);
     }, 30 * 60 * 1000); // 30 minutos en milisegundos
   };
+  // Filtrar los medicamentos que deben tomarse en el rango de horas de la mañana (por ejemplo, de 6:00 AM a 12:00 PM)
+  const morningMedicamentos = medicamentos.filter((item) => {
+    const [horaToma] = item.dias.split(":").map(Number);
+    console.log(horaToma);
+    return horaToma >= 6 && horaToma < 12; // Ajusta según el rango de horas que consideras como "morning"
+  });
 
   return (
     <div className="flex">
@@ -46,7 +71,7 @@ function Morning() {
               <th className="px-10">Medication</th>
               <th className="px-10">Dosage</th>
               <th className="px-10">Time</th>
-              <th className="px-10">Date</th>
+              <th className="px-[61px]">Date</th>
               <th className="px-10">Comments</th>
               <th className="px-11">taken</th>
               <th className="px-10">Delete</th>
@@ -54,12 +79,12 @@ function Morning() {
             </tr>
           </thead>
           <tbody className="border-2">
-            {medicamentos.map((item) => (
+            {morningMedicamentos.map((item) => (
               <tr className="border-2 bg-[#f9dad8] text-center" key={item._id}>
                 <td className="">{item.nombreMedicamento}</td>
                 <td className="px-10">{item.dosis}</td>
                 <td className="px-10">{item.frecuencia} hours</td>
-                <td className="px-10">{item.dias} </td>
+                <td className="px-[61px]">{item.dias} </td>
                 <td className="px-10">{item.comentario}</td>
                 <td className="px-11">
                   <input

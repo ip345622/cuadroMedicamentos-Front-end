@@ -1,7 +1,6 @@
 import React,{useEffect, useState} from "react";
 import { PiSunHorizonLight } from "react-icons/pi";
 import { useMedicamento } from "../../../context/medicamentosContext";
-// import Form from "../../component/formulario/index.jsx";
 import Swal from 'sweetalert2';
 
 import Delete from '../../../assets/Delete.svg';
@@ -31,6 +30,48 @@ function Evening() {
       }
     });
   };
+  const handleCheckboxClick = async (item) => {
+    if (isCheckboxDisabled) {
+      alert("El checkbox se habilitará en 30 minutos");
+      return;
+    }
+
+    // Obtener la hora actual
+    const currentDate = new Date();
+    const currentHour = currentDate.getHours();
+    const currentMinutes = currentDate.getMinutes();
+
+    // Obtener la hora de frecuencia del medicamento
+    const frecuencia = item.frecuencia;
+    const [frecuenciaHours, frecuenciaMinutes] = frecuencia.split(":").map(Number);
+
+    // Calcular la nueva hora sumando la hora de frecuencia a la hora actual
+    const newHour = (currentHour + frecuenciaHours) % 24;
+    const newMinutes = (currentMinutes + frecuenciaMinutes) % 60;
+
+    // Actualizar la hora en el campo 'dias' del medicamento
+    const newTime = `${newHour}:${newMinutes}`;
+    await updateM(item._id, { dias: newTime });
+
+    // Deshabilitar el checkbox y mostrar el mensaje
+    setIsCheckboxDisabled(true);
+    setShowEditMessage(true);
+    mostrarMedicamentos();
+
+    // Habilita nuevamente el checkbox después de 30 minutos
+    setTimeout(() => {
+      setShowEditMessage(false);
+      setIsCheckboxDisabled(false);
+    }, 30 * 60 * 1000); // 30 minutos en milisegundos
+  };
+
+  // Filtrar los medicamentos que deben tomarse en el rango de horas de la tarde (por ejemplo, de 18:00 PM a 23:59 PM)
+  const eveningMedicamentos = medicamentos.filter((item) => {
+    const [horaToma] = item.dias.split(":").map(Number);
+    console.log(horaToma);
+    return item.necesario === 'no' && (horaToma >= 18 && horaToma <= 23);
+  });
+
   
 
   return (
@@ -42,14 +83,14 @@ function Evening() {
       <div className="font-nunito flex gap-2">
         <table className="table-auto border-separate">
           <tbody className="border-2">
-            {medicamentos?.map((item) =>(
+            {eveningMedicamentos?.map((item) =>(
               <tr className="border-2 bg-[#83e1da] text-center" key={item._id}>
               <td className="w-[11.45rem]">{item.nombreMedicamento}</td>
               <td className="w-[9.4rem]">{item.dosis}</td>
               <td className="w-[9.5rem]">{item.frecuencia} hours</td>
               <td className="w-[10.6rem]">{item.dias}</td>
               <td className="w-[13.3rem]">{item.comentario}</td>
-              <td className="px-16"><input type="checkbox" /></td>
+              <td className="px-16"><input type="checkbox" onChange={() => handleCheckboxClick(item)} /></td>
               <th className="flex justify-center px-12 h-[100px] items-center justify-items-center cursor-pointer"
               onClick={() => {deleteM(item._id)}}
               ><img src={Delete} alt="delete" /></th>

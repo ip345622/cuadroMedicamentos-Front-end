@@ -8,6 +8,46 @@ import Edit from '../../../assets/Edit.svg';
 function Noon() {
   const {mostrarMedicamentos,medicamentos, deleteM} = useMedicamento();  
   
+  const handleCheckboxClick = async (item) => {
+    // Obtener la hora actual
+    const currentDate = new Date();
+    const currentHour = currentDate.getHours();
+    const currentMinutes = currentDate.getMinutes();
+
+    // Obtener la hora de frecuencia del medicamento
+    const frecuencia = item.frecuencia;
+    const [frecuenciaHours, frecuenciaMinutes] = frecuencia.split(":").map(Number);
+
+    // Calcular la nueva hora sumando la hora de frecuencia a la hora actual
+    const newHour = (currentHour + frecuenciaHours) % 24;
+    const newMinutes = (currentMinutes + frecuenciaMinutes) % 60;
+
+    // Actualizar la hora en el campo 'dias' del medicamento
+    const newTime = `${newHour}:${newMinutes}`;
+    await updateM(item._id, { dias: newTime });
+
+    // Deshabilitar el checkbox y mostrar el mensaje
+    setIsCheckboxDisabled(true);
+    setShowEditMessage(true);
+    mostrarMedicamentos();
+    // Habilita nuevamente el checkbox después de 30 minutos
+    setTimeout(() => {
+      setShowEditMessage(false);
+      setIsCheckboxDisabled(false);
+    }, 30 * 60 * 1000); // 30 minutos en milisegundos
+  };
+
+  useEffect(() => {
+    mostrarMedicamentos();
+  }, []);
+
+  // Filtrar los medicamentos que deben tomarse en el rango de horas de la tarde (por ejemplo, de 12:00 PM a 6:00 PM)
+  const noonMedicamentos = medicamentos.filter((item) => {
+    const [horaToma] = item.dias.split(":").map(Number);
+    console.log(horaToma); 
+    return horaToma >= 12 && horaToma < 17; // Ajusta según el rango de horas que consideras como "noon"
+  });
+
   function handleEditClick(item) {
     Swal.fire({
       title: "Do you want to edit this medication?",
@@ -37,14 +77,14 @@ function Noon() {
       <div className="font-nunito flex gap-2">
         <table className="table-auto border-separate">
         <tbody className="border-2">
-            {medicamentos?.map((item) =>(
+            {noonMedicamentos?.map((item) =>(
               <tr className="border-2 bg-[#fae8d0] text-center" key={item._id}>
               <td className="w-[11.45rem]">{item.nombreMedicamento}</td>
               <td className="w-[9.4rem]">{item.dosis}</td>
               <td className="w-[9.5rem]">{item.frecuencia} hours</td>
               <td className="w-[10.6rem]">{item.dias}</td>
               <td className="w-[13.3rem]">{item.comentario}</td>
-              <td className="px-16"><input type="checkbox" /></td>
+              <td className="px-16"><input type="checkbox" onChange={() => handleCheckboxClick(item)} /></td>
               <th className="flex justify-center px-12 h-[100px] items-center justify-items-center cursor-pointer"
               onClick={() => {deleteM(item._id)}}
               ><img src={Delete} alt="delete" /></th>

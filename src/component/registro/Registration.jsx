@@ -10,6 +10,7 @@ function Registration() {
   } = useForm();
   const {signup,isAuthenticated, error: RegistroErrors} = useAuth();
   // navegacion despues de la authenticación
+  const navigate = useNavigate();
 
   useEffect(() => {
     if(isAuthenticated) {

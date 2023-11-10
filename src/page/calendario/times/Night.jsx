@@ -6,8 +6,8 @@ import Delete from '../../../assets/Delete.svg';
 import Edit from '../../../assets/Edit.svg';
 
 function Night() {
-  const {mostrarMedicamentos,medicamentos, deleteM} = useMedicamento();  
-  // const [eveningMedicamentos, setEveningMedicamentos] = useState([]);
+  const {mostrarMedicamentos,medicamentos, deleteM} = useMedicamento(); 
+  const [isCheckboxDisabled, setIsCheckboxDisabled] = useState(false); 
 
   function handleEditClick(item) {
     Swal.fire({
@@ -25,6 +25,41 @@ function Night() {
       }
     });
   };
+  const handleCheckboxClick = async (item) => {
+    if (isCheckboxDisabled) {
+      alert("El checkbox se habilitará en 30 minutos");
+      return;
+    }
+
+    const currentDate = new Date();
+    const currentHour = currentDate.getHours();
+    const currentMinutes = currentDate.getMinutes();
+
+    const frecuencia = item.frecuencia;
+    const [frecuenciaHours, frecuenciaMinutes] = frecuencia.split(":").map(Number);
+
+    const newHour = (currentHour + frecuenciaHours) % 24;
+    const newMinutes = (currentMinutes + frecuenciaMinutes) % 60;
+
+    const newTime = `${newHour}:${newMinutes}`;
+    console.log(newTime);
+    await updateM(item._id, { dias: newTime });
+
+    setIsCheckboxDisabled(true);
+    setShowEditMessage(true);
+    mostrarMedicamentos();
+
+    setTimeout(() => {
+      setShowEditMessage(false);
+      setIsCheckboxDisabled(false);
+    }, 30 * 60 * 1000);
+  };
+
+  const nightMedicamentos = medicamentos.filter((item) => {
+    const [horaToma] = item.dias.split(":").map(Number);
+    console.log(horaToma);
+    return item.necesario === 'no' && (horaToma >= 0 && horaToma <= 5);
+  });
 
   useEffect(() => {
     mostrarMedicamentos();
@@ -38,14 +73,14 @@ function Night() {
       <div className="font-nunito flex gap-2">
         <table className="table-auto border-separate">
         <tbody className="border-2">
-            {medicamentos?.map((item) =>(
+            {nightMedicamentos?.map((item) =>(
               <tr className="border-2 bg-[#aac5df] text-center" key={item._id}>
               <td className="w-[11.45rem]">{item.nombreMedicamento}</td>
               <td className="w-[9.4rem]">{item.dosis}</td>
               <td className="w-[9.5rem]">{item.frecuencia} hours</td>
               <td className="w-[10.6rem]">{item.dias}</td>
               <td className="w-[13.3rem]">{item.comentario}</td>
-              <td className="px-16"><input type="checkbox" /></td>
+              <td className="px-16"><input type="checkbox" onChange={() => handleCheckboxClick(item)}/></td>
               <th className="flex justify-center px-12 h-[100px] items-center justify-items-center cursor-pointer"
               onClick={() => {deleteM(item._id)}}
               ><img src={Delete} alt="delete" /></th>
